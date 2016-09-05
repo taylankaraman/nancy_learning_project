@@ -1,0 +1,10 @@
+C:\sources\nancy_learning_project\nancy_learning_project\bin\nancy_learning_project.dll.config
+C:\sources\nancy_learning_project\nancy_learning_project\bin\nancy_learning_project.dll
+C:\sources\nancy_learning_project\nancy_learning_project\bin\nancy_learning_project.pdb
+C:\sources\nancy_learning_project\nancy_learning_project\bin\Nancy.dll
+C:\sources\nancy_learning_project\nancy_learning_project\bin\Nancy.Hosting.Aspnet.dll
+C:\sources\nancy_learning_project\nancy_learning_project\bin\Nancy.xml
+C:\sources\nancy_learning_project\nancy_learning_project\bin\Nancy.Hosting.Aspnet.xml
+C:\sources\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.csprojResolveAssemblyReference.cache
+C:\sources\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.dll
+C:\sources\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.pdb
