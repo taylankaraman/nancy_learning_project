@@ -68,8 +68,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Course.cs" />
+    <Compile Include="Post.cs" />
     <Compile Include="HomeModule.cs" />
+    <Compile Include="PostRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
