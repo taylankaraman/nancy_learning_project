@@ -14,13 +14,15 @@ namespace nancy_learning_project
         {
             var posts = new InMemoryPostRepository();
 
-            Get["/"] = parameters => "Welcome to Nancy Blog";            
+            Get["/"] = parameters => View["index.html"];            
 
             Get["/posts"] = parameters => Response.AsJson(posts.All());
 
             Get["/posts/{id}"] = parameters => Response.AsJson(posts.GetById((int)parameters.id));
 
             Post["/newpost/{name}/{author}"] = CreatePost;
+
+            Post["/newpostdb/{name}/{author}"] = CreatePostDB;
 
         }
 
@@ -38,8 +40,20 @@ namespace nancy_learning_project
 
         }
 
+        private dynamic CreatePostDB(dynamic parameters)
+        {
+            var posts = new InDbPostRepository();
+
+            String name = parameters.name;
+            String author = parameters.author;
+            var newPost = new PostEditModel(name, author);
+
+            posts.Create(newPost);
+
+            return "New post created in DB";
+
+        }
+
     }
 }
 
-// 1. Modify Web.config to integrate with a DB
-// 2. Implement a POST method that passes a new post data to the app.

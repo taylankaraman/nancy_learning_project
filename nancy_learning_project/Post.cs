@@ -14,7 +14,7 @@ namespace nancy_learning_project
             Author = author;
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Author { get; set; }
     }
@@ -32,4 +32,3 @@ namespace nancy_learning_project
     }
 }
 
-// We have implemented the in memory version, and now you need to get your own db lib and persist it in the db
