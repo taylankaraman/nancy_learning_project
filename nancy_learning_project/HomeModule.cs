@@ -20,9 +20,9 @@ namespace nancy_learning_project
 
             Get["/posts/{id}"] = parameters => Response.AsJson(posts.GetById((int)parameters.id));
 
-            Post["/newpost/{name}/{author}"] = CreatePost;
+            Post["/newpost/{name}/{author}"] = CreatePost;  //Postman
 
-            Post["/newpostdb/{name}/{author}"] = CreatePostDB;
+            Post["/newpostdb/{name}/{author}"] = CreatePostDB; //Postman
 
         }
 
@@ -37,7 +37,6 @@ namespace nancy_learning_project
             posts.Create(newPost);
 
             return "New post created";
-
         }
 
         private dynamic CreatePostDB(dynamic parameters)
@@ -51,7 +50,6 @@ namespace nancy_learning_project
             posts.Create(newPost);
 
             return "New post created in DB";
-
         }
 
     }

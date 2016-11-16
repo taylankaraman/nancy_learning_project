@@ -17,6 +17,12 @@ namespace nancy_learning_project
 
     public class InMemoryPostRepository : PostRepository
     {
+        static List<Post> List = new List<Post>(new[]
+        {
+            new Post(0, "Getting Started with Nancy", "Taylan Karaman"),
+            new Post(1, "HTTP Fundamentals", "Khan Thompson"),
+        });
+
         public IEnumerable<Post> All()
         {
             return List;
@@ -35,44 +41,34 @@ namespace nancy_learning_project
         {
             return List.FirstOrDefault(Post => Post.Id == id);
         }
-
-        static List<Post> List = new List<Post>(new[]
-        {
-            new Post(0, "Getting Started with Nancy", "Taylan Karaman"),
-            new Post(1, "HTTP Fundamentals", "Khan Thompson"),
-        });
     }
 
     public class InDbPostRepository : PostRepository
     {
+        // initialized
         int post_seq = 4;
-
-        static List<Post> List = new List<Post>(new[]
-{
-            new Post(0, "Getting Started with Nancy", "Taylan Karaman"),
-            new Post(1, "HTTP Fundamentals", "Khan Thompson"),
-        });
+        string connectionString = ConfigurationManager.ConnectionStrings["BlogDB"].ConnectionString.ToString();
+        //----
 
 
-        string strConnection = ConfigurationManager.ConnectionStrings["BlogDB"].ConnectionString.ToString();
-
-        public void insert(PostEditModel post)
+        public void Insert(PostEditModel post)
         {
-            using (SqlConnection con = new SqlConnection(strConnection))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = "insert into Table values('" + post.Name + "','" + post.Author + "')";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                con.Open();
-                cmd.ExecuteNonQuery();                
+                string sql = "INSERT INTO [Table] values('" + post.Name + "','" + post.Author + "')";
+                SqlCommand command = new SqlCommand(sql, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();              
             }
         }
 
-        public Post getById(int id)
+        public Post GetById(int id)
         {
             String Name = "";
             String Author = "";
 
-            using (SqlConnection con = new SqlConnection(strConnection))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string sql = "select Name, Author from Table where Id=" + id + ";";
                 SqlCommand cmd = new SqlCommand(sql, con);
@@ -96,6 +92,8 @@ namespace nancy_learning_project
 
         public IEnumerable<Post> All()
         {
+            List<Post> List = new List<Post>();
+
             //        string querystring =
             //"select orderid, customerid from dbo.orders;";
             //        using (sqlconnection connection = new sqlconnection(
@@ -126,16 +124,12 @@ namespace nancy_learning_project
 
         public Post Create(PostEditModel post)
         {
-            insert(post);
+            Insert(post);
 
             Post newPost = new Post(post_seq, post.Name, post.Author);
             return newPost;            
         }
 
-        public Post GetById(int id)
-        {            
-            return getById(id);
-        }
     }
 
 
