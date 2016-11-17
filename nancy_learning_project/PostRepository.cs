@@ -8,7 +8,7 @@ namespace nancy_learning_project
 {
     public interface PostRepository
     {
-        IEnumerable<Post> All();
+        IEnumerable<Post> GetAll();
 
         Post GetById(int id);
 
@@ -23,7 +23,7 @@ namespace nancy_learning_project
             new Post(1, "HTTP Fundamentals", "Khan Thompson"),
         });
 
-        public IEnumerable<Post> All()
+        public IEnumerable<Post> GetAll()
         {
             return List;
         }
@@ -51,17 +51,6 @@ namespace nancy_learning_project
         //----
 
 
-        public void Insert(PostEditModel post)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string sql = "INSERT INTO [Table] values('" + post.Name + "','" + post.Author + "')";
-                SqlCommand command = new SqlCommand(sql, connection);
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();              
-            }
-        }
 
         public Post GetById(int id)
         {
@@ -90,45 +79,62 @@ namespace nancy_learning_project
         }
 
 
-        public IEnumerable<Post> All()
+        public IEnumerable<Post> GetAll()
         {
             List<Post> List = new List<Post>();
-
-            //        string querystring =
-            //"select orderid, customerid from dbo.orders;";
-            //        using (sqlconnection connection = new sqlconnection(
-            //                   connectionstring))
-            //        {
-            //            sqlcommand command = new sqlcommand(
-            //                querystring, connection);
-            //            connection.open();
-            //            sqldatareader reader = command.executereader();
-            //            try
-            //            {
-            //                while (reader.read())
-            //                {
-            //                    console.writeline(string.format("{0}, {1}",
-            //                        reader[0], reader[1]));
-            //                }
-            //            }
-            //            finally
-            //            {
-            //                reader.close();
-            //            }
-
-            //            connection.close();
-            //        }
-
-            return List;
+            return GetAllPosts(List);
         }
 
         public Post Create(PostEditModel post)
         {
-            Insert(post);
+            InsertPost(post);
 
             Post newPost = new Post(post_seq, post.Name, post.Author);
             return newPost;            
         }
+
+
+        // SQL Operations
+        public void InsertPost(PostEditModel post)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = "INSERT INTO [Table] values('" + post.Name + "','" + post.Author + "')";
+                SqlCommand command = new SqlCommand(sql, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public List<Post> GetAllPosts(List<Post> List)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))               
+            {
+                string sql = "SELECT Id, Name, Author from [Table];";
+                SqlCommand command = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        List.Add(new Post((int)reader[0], (String)reader[1], (String)reader[2]));                        
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+
+                connection.Close();
+            }
+
+            return List;
+        }
+
+
+
 
     }
 

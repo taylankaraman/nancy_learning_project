@@ -9,20 +9,23 @@ namespace nancy_learning_project
 {
     public class HomeModule : NancyModule
     {
+        InDbPostRepository posts = new InDbPostRepository();
 
         public HomeModule()
         {
-            var posts = new InMemoryPostRepository();
+            // var posts = new InMemoryPostRepository();
 
             Get["/"] = parameters => View["index.html"];            
 
-            Get["/posts"] = parameters => Response.AsJson(posts.All());
+            // Get["/posts"] = parameters => Response.AsJson(posts.GetAll());
 
             Get["/posts/{id}"] = parameters => Response.AsJson(posts.GetById((int)parameters.id));
 
-            Post["/newpost/{name}/{author}"] = CreatePost;  //Postman
+            Post["/newpost/{name}/{author}"] = CreatePost; //Postman
 
+            // DB requests
             Post["/newpostdb/{name}/{author}"] = CreatePostDB; //Postman
+            Get["/posts"] = parameters => Response.AsJson(posts.GetAll()); //Postman
 
         }
 
@@ -40,9 +43,7 @@ namespace nancy_learning_project
         }
 
         private dynamic CreatePostDB(dynamic parameters)
-        {
-            var posts = new InDbPostRepository();
-
+        {            
             String name = parameters.name;
             String author = parameters.author;
             var newPost = new PostEditModel(name, author);
@@ -51,7 +52,6 @@ namespace nancy_learning_project
 
             return "New post created in DB";
         }
-
     }
 }
 
