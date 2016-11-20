@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace nancy_learning_project
 {
@@ -15,66 +16,36 @@ namespace nancy_learning_project
         Post Create(PostEditModel post);
     }
 
-    public class InMemoryPostRepository : PostRepository
-    {
-        static List<Post> List = new List<Post>(new[]
-        {
-            new Post(0, "Getting Started with Nancy", "Taylan Karaman"),
-            new Post(1, "HTTP Fundamentals", "Khan Thompson"),
-        });
-
-        public IEnumerable<Post> GetAll()
-        {
-            return List;
-        }
-
-        public Post Create(PostEditModel post)
-        {
-            long maxId = List.LongCount();
-            Post newPost = new Post((int)maxId++, post.Name, post.Author);
-            List.Add(newPost);
-
-            return newPost;
-        }
-
-        public Post GetById(int id)
-        {
-            return List.FirstOrDefault(Post => Post.Id == id);
-        }
-    }
-
     public class InDbPostRepository : PostRepository
     {
-        // initialized
-        int post_seq = 4;
         string connectionString = ConfigurationManager.ConnectionStrings["BlogDB"].ConnectionString.ToString();
-        //----
-
-
 
         public Post GetById(int id)
-        {
-            String Name = "";
-            String Author = "";
+        {            
+            Post postFound = new Post();
 
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = "select Name, Author from Table where Id=" + id + ";";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
+                string sql = String.Format("SELECT Id, Name, Author from [Table] where Id='{0}';",id);
+                SqlCommand command = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
                 try
                 {
-                    Name = reader[0].ToString();
-                    Author = reader[1].ToString();
+                    while (reader.Read())
+                    {
+                        postFound.Id = (int)reader[0];
+                        postFound.Name = reader[1].ToString();
+                        postFound.Author = reader[2].ToString();
+                    }                    
                 }
                 finally
                 {                    
                     reader.Close();
                 }
-                con.Close();
+                connection.Close();
 
-                return new Post(id, Name, Author);
+                return postFound;
             }
         }
 
@@ -87,24 +58,25 @@ namespace nancy_learning_project
 
         public Post Create(PostEditModel post)
         {
-            InsertPost(post);
-
-            Post newPost = new Post(post_seq, post.Name, post.Author);
-            return newPost;            
+            int insertedId = InsertPost(post);            
+            return new Post(insertedId, post.Name, post.Author);
         }
-
-
-        // SQL Operations
-        public void InsertPost(PostEditModel post)
+                        
+        public int InsertPost(PostEditModel post)
         {
+            int lastId = 0;
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = "INSERT INTO [Table] values('" + post.Name + "','" + post.Author + "')";
-                SqlCommand command = new SqlCommand(sql, connection);
+                string insertCmd = String.Format("INSERT INTO [Table] values('{0}','{1}');"
+                                   + "SELECT SCOPE_IDENTITY();", post.Name, post.Author);                                   
+
+                SqlCommand command = new SqlCommand(insertCmd, connection);
                 connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                lastId = Convert.ToInt32(command.ExecuteScalar().ToString());                
+                connection.Close();                
             }
+            return lastId;
         }
 
         public List<Post> GetAllPosts(List<Post> List)
@@ -132,11 +104,5 @@ namespace nancy_learning_project
 
             return List;
         }
-
-
-
-
     }
-
-
 }

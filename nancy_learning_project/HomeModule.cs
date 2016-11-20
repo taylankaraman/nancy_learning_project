@@ -4,6 +4,7 @@ using System.Web;
 using System.Linq;
 using Nancy;
 using Nancy.Responses;
+using System.Web.Script.Serialization;
 
 namespace nancy_learning_project
 {
@@ -13,44 +14,19 @@ namespace nancy_learning_project
 
         public HomeModule()
         {
-            // var posts = new InMemoryPostRepository();
-
-            Get["/"] = parameters => View["index.html"];            
-
-            // Get["/posts"] = parameters => Response.AsJson(posts.GetAll());
-
+            Get["/"] = parameters => View["index.html"];             
+            Get["/posts"] = parameters => Response.AsJson(posts.GetAll());
             Get["/posts/{id}"] = parameters => Response.AsJson(posts.GetById((int)parameters.id));
-
-            Post["/newpost/{name}/{author}"] = CreatePost; //Postman
-
-            // DB requests
-            Post["/newpostdb/{name}/{author}"] = CreatePostDB; //Postman
-            Get["/posts"] = parameters => Response.AsJson(posts.GetAll()); //Postman
-
+            Post["/newpostdb/{name}/{author}"] = CreatePost;
         }
 
         private dynamic CreatePost(dynamic parameters)
-        {
-            var posts = new InMemoryPostRepository();
-
-            String name = parameters.name;
-            String author = parameters.author;
-            var newPost = new PostEditModel(name, author);
-
-            posts.Create(newPost);
-
-            return "New post created";
-        }
-
-        private dynamic CreatePostDB(dynamic parameters)
         {            
             String name = parameters.name;
             String author = parameters.author;
-            var newPost = new PostEditModel(name, author);
+            var newPost = new PostEditModel(name, author);            
 
-            posts.Create(newPost);
-
-            return "New post created in DB";
+            return "New post created in DB: \n" + new JavaScriptSerializer().Serialize(posts.Create(newPost)); ;
         }
     }
 }

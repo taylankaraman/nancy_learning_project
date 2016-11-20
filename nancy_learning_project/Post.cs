@@ -7,6 +7,13 @@ namespace nancy_learning_project
 {
     public class Post
     {
+        public Post()
+        {
+            Id = 0;
+            Name = "";
+            Author = "";
+        }
+
         public Post(int id, string name, string author)
         {
             Id = id;
