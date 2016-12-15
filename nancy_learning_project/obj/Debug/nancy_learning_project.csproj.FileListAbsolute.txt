@@ -8,13 +8,15 @@ C:\sources\nancy_learning_project\nancy_learning_project\bin\Nancy.Hosting.Aspne
 C:\sources\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.csprojResolveAssemblyReference.cache
 C:\sources\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.dll
 C:\sources\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.pdb
+C:\sources\personal\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.csprojResolveAssemblyReference.cache
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\nancy_learning_project.dll.config
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\nancy_learning_project.dll
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\nancy_learning_project.pdb
+C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\Nancy.Authentication.Forms.dll
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\Nancy.dll
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\Nancy.Hosting.Aspnet.dll
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\Nancy.xml
+C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\Nancy.Authentication.Forms.xml
 C:\sources\personal\nancy_learning_project\nancy_learning_project\bin\Nancy.Hosting.Aspnet.xml
-C:\sources\personal\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.csprojResolveAssemblyReference.cache
 C:\sources\personal\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.dll
 C:\sources\personal\nancy_learning_project\nancy_learning_project\obj\Debug\nancy_learning_project.pdb
