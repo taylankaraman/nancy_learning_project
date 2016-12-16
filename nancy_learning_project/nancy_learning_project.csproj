@@ -75,6 +75,7 @@
       <DependentUpon>BlogDB.mdf</DependentUpon>
     </Content>
     <Content Include="icon.png" />
+    <Content Include="Views\edit_post.html" />
     <Content Include="Views\index.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

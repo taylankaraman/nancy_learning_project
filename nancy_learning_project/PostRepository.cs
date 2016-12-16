@@ -59,7 +59,7 @@ namespace nancy_learning_project
         public Post Create(PostEditModel post)
         {
             int insertedId = InsertPost(post);            
-            return new Post(insertedId, post.Name, post.Author);
+            return new Post(insertedId, post.Name, post.Author, post.Content);
         }
                         
         public int InsertPost(PostEditModel post)
@@ -68,8 +68,8 @@ namespace nancy_learning_project
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string insertCmd = String.Format("INSERT INTO [Table] values('{0}','{1}');"
-                                   + "SELECT SCOPE_IDENTITY();", post.Name, post.Author);                                   
+                string insertCmd = String.Format("INSERT INTO [Table] values('{0}','{1}','{2}');"
+                                   + "SELECT SCOPE_IDENTITY();", post.Name, post.Author, post.Content);                                   
 
                 SqlCommand command = new SqlCommand(insertCmd, connection);
                 connection.Open();
@@ -83,7 +83,7 @@ namespace nancy_learning_project
         {
             using (SqlConnection connection = new SqlConnection(connectionString))               
             {
-                string sql = "SELECT Id, Name, Author from [Table];";
+                string sql = "SELECT Id, Name, Author, Content from [Table] order by Id desc;";
                 SqlCommand command = new SqlCommand(sql, connection);
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -91,7 +91,7 @@ namespace nancy_learning_project
                 {
                     while (reader.Read())
                     {
-                        List.Add(new Post((int)reader[0], (String)reader[1], (String)reader[2]));                        
+                        List.Add(new Post((int)reader[0], (String)reader[1], (String)reader[2], (String)reader[3]));                        
                     }
                 }
                 finally
